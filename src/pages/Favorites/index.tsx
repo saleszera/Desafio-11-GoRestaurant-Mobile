@@ -1,4 +1,4 @@
-import { useFocusEffect } from '@react-navigation/native';
+// import { useFocusEffect } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { Image } from 'react-native';
 
@@ -31,7 +31,7 @@ interface Food {
 const Favorites: React.FC = () => {
   const [favorites, setFavorites] = useState<Food[]>([]);
 
-  useFocusEffect(() => {
+  useEffect(() => {
     async function loadFavorites(): Promise<void> {
       const response = await api.get('/favorites');
 
@@ -44,7 +44,7 @@ const Favorites: React.FC = () => {
     }
 
     loadFavorites();
-  });
+  }, []);
 
   return (
     <Container>

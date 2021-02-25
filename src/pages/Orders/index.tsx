@@ -1,5 +1,5 @@
-import { useFocusEffect } from '@react-navigation/native';
-import React, { useState } from 'react';
+// import { useFocusEffect } from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
 import { Image } from 'react-native';
 import api from '../../services/api';
 import formatValue from '../../utils/formatValue';
@@ -29,7 +29,7 @@ interface Food {
 const Orders: React.FC = () => {
   const [orders, setOrders] = useState<Food[]>([]);
 
-  useFocusEffect(() => {
+  useEffect(() => {
     async function loadOrders(): Promise<void> {
       const response = await api.get('/orders');
 
@@ -42,7 +42,7 @@ const Orders: React.FC = () => {
     }
 
     loadOrders();
-  });
+  }, []);
 
   return (
     <Container>
