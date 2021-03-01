@@ -1,22 +1,21 @@
 // import { useFocusEffect } from '@react-navigation/native';
-import React, { useEffect, useState } from 'react';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import React, { useCallback, useState } from 'react';
 import { Image } from 'react-native';
-
 import api from '../../services/api';
 import formatValue from '../../utils/formatValue';
-
 import {
   Container,
+  Food,
+  FoodContent,
+  FoodDescription,
+  FoodImageContainer,
+  FoodList,
+  FoodPricing,
+  FoodsContainer,
+  FoodTitle,
   Header,
   HeaderTitle,
-  FoodsContainer,
-  FoodList,
-  Food,
-  FoodImageContainer,
-  FoodContent,
-  FoodTitle,
-  FoodDescription,
-  FoodPricing,
 } from './styles';
 
 interface Food {
@@ -30,8 +29,9 @@ interface Food {
 
 const Favorites: React.FC = () => {
   const [favorites, setFavorites] = useState<Food[]>([]);
+  const navigation = useNavigation();
 
-  useEffect(() => {
+  useFocusEffect(() => {
     async function loadFavorites(): Promise<void> {
       const response = await api.get('/favorites');
 
@@ -44,7 +44,14 @@ const Favorites: React.FC = () => {
     }
 
     loadFavorites();
-  }, []);
+  });
+
+  const handleNavigateToOrders = useCallback(
+    (id: number) => {
+      navigation.navigate('FoodDetails', { id });
+    },
+    [navigation],
+  );
 
   return (
     <Container>
@@ -57,7 +64,10 @@ const Favorites: React.FC = () => {
           data={favorites}
           keyExtractor={item => String(item.id)}
           renderItem={({ item }) => (
-            <Food activeOpacity={0.6}>
+            <Food
+              activeOpacity={0.6}
+              onPress={() => handleNavigateToOrders(item.id)}
+            >
               <FoodImageContainer>
                 <Image
                   style={{ width: 88, height: 88 }}

@@ -1,42 +1,42 @@
+import { useNavigation, useRoute } from '@react-navigation/native';
 import React, {
-  useEffect,
-  useState,
   useCallback,
-  useMemo,
+  useContext,
+  useEffect,
   useLayoutEffect,
+  useMemo,
+  useState,
 } from 'react';
 import { Alert, Image } from 'react-native';
-
 import Icon from 'react-native-vector-icons/Feather';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
-import { useNavigation, useRoute } from '@react-navigation/native';
-import formatValue from '../../utils/formatValue';
 
+import { ModalContext } from '../../contexts/ModalContext';
 import api from '../../services/api';
-
+import formatValue from '../../utils/formatValue';
 import {
-  Container,
-  Header,
-  ScrollContainer,
-  FoodsContainer,
-  Food,
-  FoodImageContainer,
-  FoodContent,
-  FoodTitle,
-  FoodDescription,
-  FoodPricing,
   AdditionalsContainer,
-  Title,
-  TotalContainer,
   AdittionalItem,
   AdittionalItemText,
   AdittionalQuantity,
-  PriceButtonContainer,
-  TotalPrice,
-  QuantityContainer,
-  FinishOrderButton,
   ButtonText,
+  Container,
+  FinishOrderButton,
+  Food,
+  FoodContent,
+  FoodDescription,
+  FoodImageContainer,
+  FoodPricing,
+  FoodsContainer,
+  FoodTitle,
+  Header,
   IconContainer,
+  PriceButtonContainer,
+  QuantityContainer,
+  ScrollContainer,
+  Title,
+  TotalContainer,
+  TotalPrice,
 } from './styles';
 
 interface Params {
@@ -62,6 +62,8 @@ interface Food {
 }
 
 const FoodDetails: React.FC = () => {
+  const { showModalandClose } = useContext(ModalContext);
+
   const [food, setFood] = useState({} as Food);
   const [extras, setExtras] = useState<Extra[]>([]);
   const [isFavorite, setIsFavorite] = useState(false);
@@ -170,12 +172,12 @@ const FoodDetails: React.FC = () => {
           quantity: extra.quantity,
         })),
       });
-      Alert.alert(
-        'Pedido feito com sucesso! 💥️',
-        'Jajá o seu pedido será entregue! 😍️ ',
-        [{ text: 'OK', onPress: () => navigation.navigate('DashboardStack') }],
-        { cancelable: false },
-      );
+
+      showModalandClose();
+
+      setTimeout(() => {
+        navigation.navigate('DashboardStack');
+      }, 1000);
     } catch (error) {
       Alert.alert('Erro', 'Houve um erro ao fazer o pedido');
     }

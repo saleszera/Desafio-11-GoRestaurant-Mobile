@@ -2,10 +2,11 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 
-import { View } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
+
 import TabRoutes from './tab.routes';
 
+import { ModalProvider } from '../contexts/ModalContext';
 import Home from '../pages/Home';
 import FoodDetails from '../pages/FoodDetails';
 
@@ -30,6 +31,7 @@ const AppRoutes: React.FC = () => (
           gestureEnabled: false,
         }}
       />
+
       <App.Screen
         name="FoodDetails"
         component={FoodDetails}
